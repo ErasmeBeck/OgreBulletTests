@@ -19,7 +19,6 @@ btRigidBody* addSphere(float rad, float x, float y, float z, float mass)
 {
 	btTransform t;
 	t.setOrigin(btVector3(x, y, z));
-	t.setIdentity();
 	btSphereShape* sphere = new btSphereShape(rad);
 	btVector3 inertia(0, 0, 0);
 	if(mass != 0)
@@ -56,7 +55,7 @@ void renderPlane(btRigidBody* plane)
 	if(plane->getCollisionShape()->getShapeType() != STATIC_PLANE_PROXYTYPE)
 		return;
 
-	glColor3f(.5, .5, .5);
+	glColor3f(.8, .8, 1.0);
 	btTransform t;
 	plane->getMotionState()->getWorldTransform(t);
 	float mat[16];
@@ -91,6 +90,8 @@ void init(float angle)
 	world->addRigidBody(body);
 	bodies.push_back(body);
 
+	addSphere(1.0,0,20,0,1.0);
+
 	glClearColor(0,0,0,1);
 	glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
@@ -109,8 +110,6 @@ void display()
 	glLoadIdentity();
 	cam.Control();
 	cam.UpdateCamera();
-	glColor3f(0, 1, 0);
-	gluSphere(quad, 5.0, 10, 10);
 	for (int i = 0; i < bodies.size(); ++i)
 	{
 		if(bodies[i]->getCollisionShape()->getShapeType() == SPHERE_SHAPE_PROXYTYPE)
@@ -153,7 +152,7 @@ int main()
 						case SDLK_SPACE:
 						//if space is pressed, shoot a ball
 							btRigidBody* sphere=addSphere(1.0,cam.getLocation().x,cam.getLocation().y,cam.getLocation().z,1.0);
-							vector3d look=cam.getVector()*20;
+							vector3d look=cam.getVector()*2000;
 							sphere->setLinearVelocity(btVector3(look.x,look.y,look.z));
 							break;
 					}
@@ -168,10 +167,17 @@ int main()
 					cam.mouseIn(true);
 					break;
 				case SDLK_SPACE:
-					btRigidBody* sphere = addSphere(10, cam.getLocation().x, cam.getLocation().y, cam.getLocation().z, 2.0);
+					btRigidBody* sphere = addSphere(10, cam.getLocation().x, cam.getLocation().y, cam.getLocation().z, 1.0);
 					vector3d look = cam.getVector() * 2000;
 					sphere->setLinearVelocity(btVector3(look.x, look.y, look.z));
 					break;
+
+					/*
+					 * btRigidBody* sphere=addSphere(10,cam.getLocation().x,cam.getLocation().y,cam.getLocation().z,1.0);
+						vector3d look=cam.getVector()*20;
+						sphere->setLinearVelocity(btVector3(look.x,look.y,look.z));
+						break;
+					 */
 			}
 		}
 		world->stepSimulation(1/60.0);
