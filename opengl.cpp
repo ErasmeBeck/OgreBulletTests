@@ -167,7 +167,11 @@ int main()
 				case SDL_MOUSEBUTTONDOWN:
 					cam.mouseIn(true);
 					break;
-
+				case SDLK_SPACE:
+					btRigidBody* sphere = addSphere(10, cam.getLocation().x, cam.getLocation().y, cam.getLocation().z, 2.0);
+					vector3d look = cam.getVector() * 2000;
+					sphere->setLinearVelocity(btVector3(look.x, look.y, look.z));
+					break;
 			}
 		}
 		world->stepSimulation(1/60.0);
@@ -175,6 +179,16 @@ int main()
 		SDL_GL_SwapBuffers();
 		if(1000.0/60>SDL_GetTicks()-start)
 			SDL_Delay(1000.0/60-(SDL_GetTicks()-start));
+	}
+
+	for(int i = 0; i < bodies.size(); i++)
+	{
+		world->removeCollisionObject(bodies[i]);
+		btMotionState* motionState = bodies[i]->getMotionState();
+		btCollisionShape* collisionShape = bodies[i]->getCollisionShape();
+		delete bodies[i];
+		delete collisionShape;
+		delete motionState;
 	}
 
 	delete dispatcher;
