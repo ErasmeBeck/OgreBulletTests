@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS := -lSDL -lGLU -lGL -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath
+LIBS := -lOgreMain -lOIS -lboost_system -lOgreOverlay -lOgreTerrain -lSDL -lGLU -lGL -lBulletSoftBody -lBulletDynamics -lBulletCollision -lLinearMath
 
