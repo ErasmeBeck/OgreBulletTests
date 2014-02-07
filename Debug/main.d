@@ -179,8 +179,8 @@ main.d: ../main.cpp /usr/local/include/OGRE/Ogre.h \
  /usr/local/include/OGRE/OgreConvexBody.h \
  /usr/local/include/OGRE/OgreShadowCameraSetupLiSPSM.h \
  /usr/local/include/OGRE/OgreShadowCameraSetupPlaneOptimal.h \
- /usr/local/include/OGRE/OgreShadowCameraSetupPSSM.h ../camera.h \
- ../vector3d.h /usr/local/include/bullet/btBulletDynamicsCommon.h \
+ /usr/local/include/OGRE/OgreShadowCameraSetupPSSM.h \
+ /usr/local/include/bullet/btBulletDynamicsCommon.h \
  /usr/local/include/bullet/btBulletCollisionCommon.h \
  /usr/local/include/bullet/BulletCollision/CollisionDispatch/btCollisionWorld.h \
  /usr/local/include/bullet/LinearMath/btVector3.h \
@@ -677,10 +677,6 @@ main.d: ../main.cpp /usr/local/include/OGRE/Ogre.h \
 /usr/local/include/OGRE/OgreShadowCameraSetupPlaneOptimal.h:
 
 /usr/local/include/OGRE/OgreShadowCameraSetupPSSM.h:
-
-../camera.h:
-
-../vector3d.h:
 
 /usr/local/include/bullet/btBulletDynamicsCommon.h:
 

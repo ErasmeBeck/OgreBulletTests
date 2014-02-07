@@ -3,14 +3,11 @@
 #include <SDL/SDL.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include "camera.h"
 #include "btBulletDynamicsCommon.h"
 #include <vector>
 
 
-
 using namespace Ogre;
-
 
 //function defs
 ManualObject* createCubeMesh(Ogre::String name, Ogre::String matName);
@@ -218,6 +215,7 @@ private:
       cmo->convertToMesh("cube");
       ent = mSceneMgr->createEntity("Cube", "cube.mesh");
       ent->setCastShadows(true);
+      ent->setMaterialName("Examples/Aureola");
       boxNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
       boxNode->attachObject(ent);
       boxNode->setScale(Vector3(0.1,0.1,0.1)); // for some reason converttomesh multiplied dimensions by 10
