@@ -1,10 +1,6 @@
 #include <Ogre.h>
 #include <OIS/OIS.h>
-#include <SDL/SDL.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
 #include "btBulletDynamicsCommon.h"
-#include <vector>
 
 
 using namespace Ogre;
