@@ -5,6 +5,9 @@
 
 using namespace Ogre;
 
+
+Camera* cam;
+
 //function defs
 ManualObject* createCubeMesh(Ogre::String name, Ogre::String matName);
 
@@ -58,6 +61,7 @@ public:
     ~Application()
     {
         mInputManager->destroyInputObject(mKeyboard);
+        mInputManager->destroyInputObject(mMouse);
         OIS::InputManager::destroyInputSystem(mInputManager);
 
 
@@ -96,6 +100,7 @@ private:
     Root *mRoot;
     SceneManager *mSceneMgr;
     OIS::Keyboard *mKeyboard;
+    OIS::Mouse* mMouse;
     OIS::InputManager *mInputManager;
     bool mContinue;
 
@@ -117,11 +122,13 @@ private:
    bool frameStarted(const FrameEvent &evt)
     {
       mKeyboard->capture();
+      mMouse->capture();
 
         // update physics simulation
       dynamicsWorld->stepSimulation(evt.timeSinceLastFrame,50);
         return mContinue;
     }
+
 
    // KeyListener
    bool keyPressed(const OIS::KeyEvent &e) {
@@ -196,7 +203,7 @@ private:
     void setupScene()
     {
         mSceneMgr = mRoot->createSceneManager(ST_GENERIC, "Default SceneManager");
-        Camera *cam = mSceneMgr->createCamera("Camera");
+        cam = mSceneMgr->createCamera("Camera");
         Viewport *vp = mRoot->getAutoCreatedWindow()->addViewport(cam);
 
           Entity *ent;
@@ -209,10 +216,10 @@ private:
       cmo->convertToMesh("cube");
       ent = mSceneMgr->createEntity("Cube", "cube.mesh");
       ent->setCastShadows(true);
-      ent->setMaterialName("Examples/Aureola");
       boxNode = mSceneMgr->getRootSceneNode()->createChildSceneNode();
       boxNode->attachObject(ent);
-      boxNode->setScale(Vector3(0.1,0.1,0.1)); // for some reason converttomesh multiplied dimensions by 10
+      boxNode->setScale(Vector3(0.1, 0.1, 0.1)); // for some reason converttomesh multiplied dimensions by 10
+
 
 
       // make a rock wall on the floor
@@ -255,7 +262,7 @@ private:
         {
             mKeyboard = static_cast<OIS::Keyboard*>(mInputManager->createInputObject(OIS::OISKeyboard, true));
             mKeyboard->setEventCallback(this);
-            //mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject(OIS::OISMouse, false));
+            mMouse = static_cast<OIS::Mouse*>(mInputManager->createInputObject(OIS::OISMouse, false));
             //mJoy = static_cast<OIS::JoyStick*>(mInputManager->createInputObject(OIS::OISJoyStick, false));
         }
         catch (const OIS::Exception &e)
@@ -323,9 +330,8 @@ private:
 
          {
             //create a dynamic rigidbody
-
-            btCollisionShape* colShape = new btBoxShape(btVector3(1,1,1));
-  //          btCollisionShape* colShape = new btSphereShape(btScalar(1.));
+        	btCollisionShape* colShape = new btBoxShape(btVector3(1,1,1));
+            //btCollisionShape* colShape = new btSphereShape(btScalar(1.));
             collisionShapes.push_back(colShape);
 
             /// Create Dynamic Objects
@@ -341,9 +347,10 @@ private:
             if (isDynamic)
                colShape->calculateLocalInertia(mass,localInertia);
 
-               startTransform.setOrigin(btVector3(0,250,0));
+               startTransform.setOrigin(btVector3(0,100,0));
                // *** give it a slight twist so it bouncees more interesting
                startTransform.setRotation(btQuaternion(btVector3(1.0, 1.0, 0.0), 0.6));
+
 
                //using motionstate is recommended, it provides interpolation capabilities, and only synchronizes 'active' objects
                //btDefaultMotionState* myMotionState = new btDefaultMotionState(startTransform);
